@@ -9,7 +9,8 @@ namespace Ticker501_Class_Library
     public class Portfolio
     {
         List<Stock> _stock = new List<Stock>();
-        int quantity;
+        List<int> _quantity = new List<int>();
+        List<double> _prices = new List<double>();
         double _totalPositions = 0;
         string _name;
 
@@ -30,8 +31,9 @@ namespace Ticker501_Class_Library
         public void AddStocks(Stock stock, int quantity)
         {
             _stock.Add(stock);
-            _totalPositions = stock.Price * quantity;
-            
+            _totalPositions += (stock.Price * quantity);
+            _prices.Add(stock.Price * quantity);
+            _quantity.Add(quantity);
 
         }
 
@@ -55,7 +57,7 @@ namespace Ticker501_Class_Library
             return _stock;
         }
 
-        public Stock GetStocK(string ticker)
+        public Stock GetStock(string ticker)
         {
             for(int i = 0; i < _stock.Count; i++)
             {
@@ -79,16 +81,41 @@ namespace Ticker501_Class_Library
             {
                 double newPrice = _stock[i].Price * percentage;
                 _stock[i].Price += newPrice;
-
-
             }
 
             _totalPositions += (_totalPositions * percentage);
-
-
-
         }
 
+        /// <summary>
+        /// Used to get the quatity of the stock purchased
+        /// </summary>
+        /// <param name="ticker"></param>
+        /// <returns></returns>
+        public int GetQuantity(string ticker)
+        {
+            for (int i = 0; i < _stock.Count; i++)
+            {
+               if(ticker == _stock[i].Ticker)
+               {
+                    return _quantity[i];
+               }
+            }
+
+            return 0;
+        }
+
+        public double GetPriceOfSelectedStock(string ticker)
+        {
+            for (int i = 0; i < _stock.Count; i++)
+            {
+                if (ticker == _stock[i].Ticker)
+                {
+                    return _prices[i];
+                }
+            }
+
+            return 0;
+        }
 
 
     }
